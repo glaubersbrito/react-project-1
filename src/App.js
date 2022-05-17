@@ -1,25 +1,52 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import AddTask from './components/addTask';
+import Tasks from './components/Tasks';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+const App = () =>{
+  const [tasks, setTasks] = useState([
+    {
+      id:'1',
+      title:'Code and compile',
+      completed:false,
+    },
+    {
+      id:'2',
+      title:'Do the homework',
+      completed:false,
+    },
+    {
+      id:'3',
+      title:'Conquer a medal',
+      completed:true,
+    },
+    {
+      id:'4',
+      title:'Lose weight',
+      completed:false,
+    }
+  ]
+
   );
+  
+  const handleTaskAddition = (taskTitle)=>{
+    const newTasks = [... tasks, {
+      title: taskTitle,
+      id: Math.random(10),
+      completed: false,
+    }];
+    setTasks(newTasks);
+  }
+
+  return (
+  <>
+  <div className='container'>
+    <AddTask handleTaskAddition={handleTaskAddition}/>
+    <Tasks tasks={tasks}/>
+    
+  </div>
+  
+  </>)
 }
 
 export default App;
