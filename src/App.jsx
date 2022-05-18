@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import {v4 as uuidv4} from 'uuid';
+import {BrowserRouter as Router} from 'react-router-dom';
 
 import './App.css';
+
 import AddTask from './components/addTask';
 import Tasks from './components/Tasks';
+import Header from './components/Header';
 
 const App = () =>{
   const [tasks, setTasks] = useState([
@@ -35,18 +38,22 @@ const App = () =>{
     const newTasks = tasks.map(task =>{
       if (task.id === taskId)
       return {
-        ... task, completed: !task.completed
+        ...task, completed: !task.completed
         
       }
       return task;
     });
     setTasks(newTasks)
   };
-   
-  
+
+  const handleTaskRemotion = (taskId) => {
+    const newTasks = tasks.filter(task => task.id !==taskId);
+    setTasks(newTasks);
+  }
+    
   
   const handleTaskAddition = (taskTitle)=>{
-    const newTasks = [... tasks, {
+    const newTasks = [...tasks, {
       title: taskTitle,
       id: uuidv4(),
       completed: false,
@@ -56,12 +63,18 @@ const App = () =>{
 
   return (
   <>
-  <div className='container'>
-    <AddTask handleTaskAddition={handleTaskAddition}/>
-    <Tasks tasks={tasks} handleTaskCheck={handleTaskCheck}/>
-    
-  </div>
-  
+    <Router>
+      <div className='container'>
+        <Header />
+        <AddTask handleTaskAddition={handleTaskAddition}/>
+        <Tasks 
+        tasks={tasks} 
+        handleTaskCheck={handleTaskCheck}
+        handleTaskRemotion={handleTaskRemotion}
+        />
+        
+      </div>
+      </Router>
   </>)
 }
 
